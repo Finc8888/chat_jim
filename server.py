@@ -16,7 +16,7 @@ def get_messaging(mes):
 	JSON объекта
 
 	"""
-	reciving_data = json.dumps(mes)
+	reciving_data = json.loads(mes)
 	return reciving_data
 def response():
 	"""
@@ -43,22 +43,23 @@ def response():
 
 def server(port = 7777, addr = ''):
 	s = socket(AF_INET, SOCK_STREAM)#Создает сокет TCP
-	if 1 < (len(sys.argv)) >= 3:
-		port = sys.argv[1]
-		addr = sys.argv[2]
-	elif len(sys.argv) == 1:
-		s.bind((addr, port))	
-		s.listen(5)#Переходит в реж. ожид-я запросов одноврем-но обслуж. не более 5
-		print("Сервер слушает {} порт...".format(port))
-		while True:
-			client, addr = s.accept()#Принять запрос на соединение
-			print("Получен запрос на соединение от {}".format(addr))
-			json_messaging = client.recv(1024)
-			messaging = get_messaging(json_messaging)
-			client.send(messaging.encode('utf-8'))
-			client.close()
-	else:
-		print("Неверное количество переданных аргументов")
+	if len(sys.argv)>1:
+		# print(len(sys.argv))
+		addr = sys.argv[1]
+		# print(addr)
+		port = int(sys.argv[2])
+		# print(port, type(port))
+	s.bind((addr, port))	
+	s.listen(5)#Переходит в реж. ожид-я запросов одноврем-но обслуж. не более 5
+	print("Сервер слушает {} порт...".format(port))
+	while True:
+		client, addr = s.accept()#Принять запрос на соединение
+		print("Получен запрос на соединение от {}".format(addr))
+		json_messaging = client.recv(1024)
+		messaging = get_messaging(json_messaging)
+		client.send(messaging.encode)
+		client.close()
+	
 
 if __name__ == '__main__':
 	server()
