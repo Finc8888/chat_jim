@@ -37,6 +37,8 @@ def response():
 		"time" : ctime(),
 		"alert" : "message(optional for 2xx codes)"
 	}
+        resp = json.dumps(resp)
+	    return resp
 	except:
 		resp["response"] = responce_list[2]
 
@@ -56,8 +58,10 @@ def server(port = 7777, addr = ''):
 		client, addr = s.accept()#Принять запрос на соединение
 		print("Получен запрос на соединение от {}".format(addr))
 		json_messaging = client.recv(1024)
-		messaging = get_messaging(json_messaging)
-		client.send(messaging.encode)
+		print("json -catch")
+		json_ms_decode = json_messaging.decode()
+		#messaging = get_messaging(json_ms_decode)
+		client.send(responce().encode())
 		client.close()
 	
 

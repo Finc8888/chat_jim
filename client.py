@@ -28,7 +28,7 @@ def make_pressence_messaging(action = "presence", time = "ctime()", status =
 	}
 
 	""" 
-	presence_messaging =list( {
+	presence_messaging = {
 		"action" : action,
 		"time" : ctime(),
 		"type" : status,
@@ -36,18 +36,17 @@ def make_pressence_messaging(action = "presence", time = "ctime()", status =
 				"account_name" : account_name,
 				"status" : "YEP, I AM HERE"
 		}
-	})
+	}
 	presence_jim_messinging = json.dumps(presence_messaging)
 	return presence_jim_messinging
 #TODO Разобрать сообщение от сервера
 def watch_messiging(mes):
 	"""
-	Разбирает полученный ответ сервера
-
 	"""
 	answer = json.loads(mes)
 	return answer
-#TODO Отправить сообщение серверу, получить ответ от сервера
+#TODO Отправить сообщение серверу, получить ответ 
+#Разбирает полученный ответ сервера от сервера
 def client(ip = 'localhost', port = 7777, msg = None):
 	"""
 	Отправляет серверу precence-сообщение, получает от него ответ
@@ -56,10 +55,12 @@ def client(ip = 'localhost', port = 7777, msg = None):
 	s = socket(AF_INET, SOCK_STREAM)#Создает сокет TCP
 	s.connect((ip, port))
 	s.send(make_pressence_messaging().encode())
+	print("Send - Ok")
 	answer_from_server_jim = s.recv(1024)
-	answer_from_server = watch_messiging(answer_from_server_jim)
+	print(answer_from_server_jim)
+	#answer_from_server = watch_messiging(answer_from_server_jim)
 	s.close()
-	return answer_from_server
+	return answer_from_server_jim
 if __name__ == '__main__':
 	client()
 
