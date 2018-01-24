@@ -28,19 +28,18 @@ def response():
 	}
 
 	"""
-	responce_list =["100 - базовое уведомление,\
-	               200 - OK", "404 - пользователь отсутствует на сервере",\
+	responce_list =["100 - базовое уведомление",\
+	               "Код ошибки: 200 - OK", "404 - пользователь отсутствует на сервере",\
 	               "500 - ошибка сервера"]
-	try:
-		resp = {
-		"response" : responce_list[1],
-		"time" : ctime(),
-		"alert" : "message(optional for 2xx codes)"
-	}
-        resp = json.dumps(resp)
-	    return resp
-	except:
-		resp["response"] = responce_list[2]
+	# try:
+	resp = {
+	"response" : responce_list[1],
+	"time" : ctime(),
+	"alert" : "message(optional for 2xx codes)"}
+	resp = json.dumps(resp)
+	return resp
+	# except:
+	# 	resp["response"] = responce_list[2]
 
 
 def server(port = 7777, addr = ''):
@@ -58,10 +57,10 @@ def server(port = 7777, addr = ''):
 		client, addr = s.accept()#Принять запрос на соединение
 		print("Получен запрос на соединение от {}".format(addr))
 		json_messaging = client.recv(1024)
-		print("json -catch")
+		#print("json -catch")
 		json_ms_decode = json_messaging.decode()
 		#messaging = get_messaging(json_ms_decode)
-		client.send(responce().encode())
+		client.send(response().encode('utf-8'))
 		client.close()
 	
 

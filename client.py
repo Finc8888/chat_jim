@@ -54,14 +54,15 @@ def client(ip = 'localhost', port = 7777, msg = None):
 	"""
 	s = socket(AF_INET, SOCK_STREAM)#Создает сокет TCP
 	s.connect((ip, port))
-	s.send(make_pressence_messaging().encode())
-	print("Send - Ok")
+	s.send(make_pressence_messaging().encode('utf-8'))
+	#print("Send - Ok")
 	answer_from_server_jim = s.recv(1024)
-	print(answer_from_server_jim)
-	#answer_from_server = watch_messiging(answer_from_server_jim)
+	#print(answer_from_server_jim.decode('utf-8'))
+	answer_from_server = watch_messiging(answer_from_server_jim)
+	#print(answer_from_server['response'])
 	s.close()
-	return answer_from_server_jim
+	return answer_from_server['response']
 if __name__ == '__main__':
-	client()
+	print(client())
 
 	 
